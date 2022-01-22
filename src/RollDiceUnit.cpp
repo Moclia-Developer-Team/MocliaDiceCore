@@ -248,6 +248,7 @@ namespace Moclia
         expression.finalResult = temp.back();
         calcTool.clearZero(expression.finalResult);
         temp.pop_back();
+        expression.postfix.clear();
         return;
     }
 
@@ -477,12 +478,6 @@ namespace Moclia
             exper.push_back(tmpStr);
         }
 
-        for (std::string a : exper)
-        {
-            std::cout << a;
-        }
-
-        std::cout << std::endl;
         opera.clear();
     }
 
@@ -501,6 +496,14 @@ namespace Moclia
         int64_t bracketCount = 0; // 括号计数
         int decimalPointCount = 0; // 小数点计数
         int defaultDice = 100; // 默认骰
+
+        expression.reason.clear();
+        expression.exception.clear();
+
+        if (expression.original.empty())
+        {
+            expression.original = "1D100";
+        }
 
         for (char exp : expression.original)
         {
@@ -580,7 +583,7 @@ namespace Moclia
                         case '(':
                             bracketCount++;
                             // 判断是否是运算符
-                            if (expEp.find(temp) != std::string::npos)
+                            if (temp == 0 || expEp.find(temp) != std::string::npos)
                             {
                                 if (temp == ')')
                                 {
@@ -669,7 +672,10 @@ namespace Moclia
                                 // 非数字继续处理
                                 if (temp == 0 || expCanWork.find(temp) != std::string::npos)
                                 {
-                                    stand += std::to_string(1);
+                                    if (temp != ')')
+                                    {
+                                        stand += std::to_string(1);
+                                    }
                                     stand += exp;
                                     temp = exp;
                                 }
@@ -697,7 +703,10 @@ namespace Moclia
                                 // 非数字继续处理
                                 if (temp == 0 || expCanWork.find(temp) != std::string::npos)
                                 {
-                                    stand += std::to_string(1);
+                                    if (temp != ')')
+                                    {
+                                        stand += std::to_string(1);
+                                    }
                                     stand += 'D';
                                     temp = 'D';
                                 }
@@ -842,6 +851,17 @@ namespace Moclia
                             }
                             break;
                         case '0' ... '9':
+                            if (temp == ')')
+                            {
+#ifdef MOCLIA_LANG_ZH
+                                expression.exception = "错误的表达式";
+                                //throw std::invalid_argument("错误的表达式");
+#else
+                                expression.exception = "invalid expression";
+                                //throw std::invalid_argument("invalid expression");
+#endif
+                                return;
+                            }
                             stand += exp;
                             temp = exp;
                             break;
@@ -861,7 +881,12 @@ namespace Moclia
             }
         }
 
-        if (std::isdigit(stand.back()) == 0)
+        if (stand.empty())
+        {
+            stand = "1D100";
+        }
+
+        if (std::isdigit(stand.back()) == 0 && stand.back() != ')')
         {
             if (stand.back() == 'D')
             {
@@ -869,20 +894,36 @@ namespace Moclia
             }
             else
             {
-                stand += 1;
+                stand += std::to_string(1);
             }
         }
 
         if (bracketCount != 0)
         {
 #ifdef MOCLIA_LANG_ZH
-            throw std::logic_error("括号不匹配");
+            expression.exception = "括号不匹配";
+            //throw std::logic_error("括号不匹配");
 #else
-            throw std::logic_error("bracket mismatch");
+            expression.exception = "括号不匹配";
+            //throw std::logic_error("bracket mismatch");
 #endif
+            return;
         }
 
         expression.original = stand;
         return;
+    }
+
+    /**
+     * @brief 清除exp_t的所有数据
+     * */
+    void exp_t::clear()
+    {
+        exp_t::exception.clear();
+        exp_t::reason.clear();
+        exp_t::original.clear();
+        exp_t::postfix.clear();
+        exp_t::finalResult.clear();
+        exp_t::middleCalc.clear();
     }
 }

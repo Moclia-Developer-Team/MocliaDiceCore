@@ -51,6 +51,9 @@ namespace Moclia
         std::string middleCalc; // 返回给用户的计算中间过程
         std::string finalResult; // 最终计算得到的结果
         std::string reason; // 分离出来的理由
+        std::string exception; // 表达式错误信息
+
+        void clear();
     };
 
     /**
