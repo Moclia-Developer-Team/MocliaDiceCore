@@ -21,6 +21,20 @@ namespace Moclia
         return __rdtsc();
     }
 #elif __linux__
+#ifdef __aarch64__ || __arm__
+    /**
+     * @brief 获取CPU高精度时间戳作为随机数种子
+     * @return CPU时钟刻
+     * @test 完成单元测试
+     * @note 因为使用了内联汇编，所以部分编译器无法通过编译
+     * */
+    uint64_t tool::getCycleCount()
+    {
+        uint64_t tsc;
+        asm volatile("mrs %0, cntvct_el0" : "=r" (tsc));
+        return tsc;
+    }
+#else
     /**
      * @brief 获取CPU高精度时间戳作为随机数种子
      * @return CPU时钟刻
@@ -33,6 +47,7 @@ namespace Moclia
         __asm__ volatile ("rdtsc" : "=a" (low), "=d" (high));
         return (high << 32) | low;
     }
+#endif
 #endif
 
     /**
