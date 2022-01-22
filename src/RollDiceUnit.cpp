@@ -489,7 +489,7 @@ namespace Moclia
     void calc::expressionStandard(exp_t &expression)
     {
         std::string stand;
-        char temp;
+        char temp = 0;
         std::string expEp = "+-*xX/^()DdKkQq.0123456789";
         std::string expCanWork = ")DdKkQq";
         bool isResult = false;
