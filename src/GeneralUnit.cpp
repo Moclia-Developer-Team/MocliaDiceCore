@@ -202,7 +202,7 @@ namespace Moclia
      * */
     bool tool::isFloat(std::string str)
     {
-        if (str[0] = '-')
+        if (str[0] == '-')
         {
             str = str.substr(1,str.size() - 1);
         }
