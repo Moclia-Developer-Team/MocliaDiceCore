@@ -7,9 +7,9 @@
  * */
 #pragma once
 
-#ifndef MOCLIADICE_ROLLDICEUNIT_H
-#define MOCLIADICE_ROLLDICEUNIT_H
-#endif //MOCLIADICE_ROLLDICEUNIT_H
+#ifndef MOCLIADICECORE_ROLLDICEUNIT_H
+#define MOCLIADICECORE_ROLLDICEUNIT_H
+#endif //MOCLIADICECORE_ROLLDICEUNIT_H
 
 #include "GeneralUnit.h"
 
@@ -24,7 +24,8 @@ namespace Moclia
      * @class int64_t number：骰子个数\n
      *         int64_t surface：骰子面数\n
      *         int64_t reason：所有骰子结果的总和\n
-     *         std::deque\<int64_t\> randomResult：掷骰原始结果的队列
+     *         std::deque\<int64_t\> randomResult：掷骰原始结果的队列\n
+     *         std::deque\<int64_t\> randomResult：掷骰原始结果的队列的字符串型
      * */
     class dice_t
     {
@@ -33,6 +34,7 @@ namespace Moclia
         int64_t surface = 0; // 骰子面数
         int64_t result = 0; // 所有骰子结果的总和
         std::deque<int64_t> randResult; // 投掷原始结果的队列
+        std::deque<std::string> randResultStr; // 投掷原始结果的队列的字符串型
     };
 
     /**
@@ -63,11 +65,11 @@ namespace Moclia
     {
     public:
         // XdYkqZ规则最小掷骰表达式计算
-        dice_t diceCalc(int64_t diceNumber, int64_t diceSurface, char extFlag, int64_t flagNum);
+        static dice_t diceCalc(int64_t diceNumber, int64_t diceSurface, char extFlag, int64_t flagNum);
         // 掷骰表达式计算和中间过程生成
-        void expressionCalculator(exp_t &expression);
+        static void expressionCalculator(exp_t &expression);
         // 掷骰表达式规范化
-        void expressionStandard(exp_t &expression);
+        static void expressionStandard(exp_t &expression);
 
     private:
         // 中缀表达式转后缀表达式

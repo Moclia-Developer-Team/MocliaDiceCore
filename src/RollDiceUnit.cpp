@@ -5,7 +5,7 @@
  * @headerfile RollDiceUnit.h
  * @copyright 星翛-STASWIT 2018-2022
  * */
-#include "RollDiceUnit.h"
+#include "MocliaDiceCore/RollDiceUnit.h"
 
 /**
  * @namespace moclia
@@ -31,6 +31,14 @@ namespace Moclia
     {
         std::deque<int64_t> diceResult; // 保存所有掷骰结果
         dice_t reDice; // 返回的骰子结构
+        reDice.randResult.clear();
+
+        if (diceSurface == 0)
+        {
+            reDice.result = 0;
+            reDice.randResult.push_back(0);
+            return reDice;
+        }
 
         // 掷几个骰子循环几次
         for (int diceRoll = 0; diceRoll < diceNumber; diceRoll++)
@@ -254,8 +262,8 @@ namespace Moclia
 
     /**
      * @brief 中缀表达式转后缀表达式
-     * @param infix 中缀表达式
-     * @param exper 存放后缀表达式的队列
+     * @param infix  中缀表达式
+     * @param exper  存放后缀表达式的队列
      * @note 运算符顺序：\n
      *      第一队列：+、-\n
      *      第二队列：*、/\n
@@ -267,6 +275,7 @@ namespace Moclia
     void calc::toPostfixExp(std::string &infix, std::deque<std::string> &exper)
     {
         //std::deque<std::string> exper; // 存数字和最终后缀表达式的队列
+        exper.clear(); // 保证存后缀表达式的队列是空的，避免干扰
         std::deque<char> opera; // 存运算符的队列
         std::string tmpStr; // 缓存+类型转换
         std::string operaEp = "+-*/^()DKQ."; //运算符组
@@ -727,7 +736,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // K前存在D且D的位置是和K匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D'),stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += exp;
                                     temp = exp;
@@ -771,7 +780,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // K前存在D且D的位置是和K匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D'),stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += 'K';
                                     temp = 'K';
@@ -815,7 +824,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // Q前存在D且D的位置是和Q匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D'),stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += 'Q';
                                     temp = 'Q';

@@ -5,7 +5,7 @@
  * @headerfile GeneralUnit.h
  * @copyright 星翛-STASWIT 2018-2022
  * */
-#include "GeneralUnit.h"
+#include "MocliaDiceCore/GeneralUnit.h"
 
 namespace Moclia
 {
@@ -269,7 +269,7 @@ namespace Moclia
                     }
                 }
 
-                if (extZero == false)
+                if (!extZero)
                 {
                     str = str.substr(0,digit + 1);
                     return;

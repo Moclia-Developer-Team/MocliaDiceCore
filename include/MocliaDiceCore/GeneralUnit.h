@@ -23,6 +23,7 @@
 #include <locale>
 #include <iterator>
 #include <cmath>
+#include <map>
 
 /**
  * @namespace moclia
@@ -37,30 +38,30 @@ namespace Moclia
     {
     public:
         // 获取cpu时钟刻
-        uint64_t getCycleCount();
+        static uint64_t getCycleCount();
         // 数组求和
-        int64_t dequeSum(std::deque<int64_t> needSum);
+        static int64_t dequeSum(std::deque<int64_t> needSum);
         // 随机数生成器
-        int64_t randNumber(int64_t min, int64_t max);
+        static int64_t randNumber(int64_t min, int64_t max);
         // 带下标的快速排序算法
-        void quickSort(std::deque<int64_t> &sortArray, std::deque<int64_t> &subscriptArray, int64_t beginSort, int64_t endSort);
+        static void quickSort(std::deque<int64_t> &sortArray, std::deque<int64_t> &subscriptArray, int64_t beginSort, int64_t endSort);
         // 正常快速排序算法
-        void quickSort(std::deque<int64_t> &sortArray, int64_t beginSort, int64_t endSort);
+        static void quickSort(std::deque<int64_t> &sortArray, int64_t beginSort, int64_t endSort);
         // string 转 wstring
-        void sswConversion(std::string &str, std::wstring &wstr);
+        static void sswConversion(std::string &str, std::wstring &wstr);
         // wstring 转 string
-        void sswConversion(std::wstring &wstr, std::string &str);
+        static void sswConversion(std::wstring &wstr, std::string &str);
         // 查询窄字节字符串是否全是数字
-        bool isDigitAll(std::string str);
+        static bool isDigitAll(std::string str);
         // 查询宽字节字符串是否全是数字
-        bool isDightAll(std::wstring wstr);
+        static bool isDightAll(std::wstring wstr);
         // 清除双精度浮点计算里多余的0
-        void clearZero(std::string &str);
+        static void clearZero(std::string &str);
         // 判断字符串是不是浮点数
         static bool isFloat(std::string str);
         // 拼接表达式
-        void expSum(std::string &str, std::string &expression);
+        static void expSum(std::string &str, std::string &expression);
         // 关键变量替换
-        void varImport();
+        static void varImport();
     };
 }
