@@ -11,5 +11,13 @@
 
 namespace Moclia
 {
+    void WW::addDiceCalc()
+    {
 
+    }
+
+    void WW::expStandard()
+    {
+
+    }
 }

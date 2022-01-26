@@ -14,3 +14,15 @@
 
 #include "GeneralUnit.h"
 #include "RollDiceUnit.h"
+
+namespace Moclia
+{
+    class WW
+    {
+    public:
+        static void addDice();
+    private:
+        static void addDiceCalc();
+        static void expStandard();
+    };
+}

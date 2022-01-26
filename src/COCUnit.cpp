@@ -10,5 +10,18 @@
 
 namespace Moclia
 {
+    void COC::sanityRoll()
+    {
 
+    }
+
+    void COC::rewardAndPunishRoll()
+    {
+
+    }
+
+    void COC::skillRoll()
+    {
+
+    }
 }

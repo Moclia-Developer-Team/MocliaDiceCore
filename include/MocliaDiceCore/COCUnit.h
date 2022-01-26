@@ -16,5 +16,10 @@
 
 namespace Moclia
 {
-
+    class COC
+    {
+        static void sanityRoll();
+        static void skillRoll();
+        static void rewardAndPunishRoll();
+    };
 }

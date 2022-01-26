@@ -11,8 +11,6 @@
 #define MOCLIADICE_GENERALUNIT_H
 #endif //MOCLIADICE_GENERALUNIT_H
 
-#define MOCLIA_LANG_ZH
-
 #include <iostream>
 #include <deque>
 #include <random>
