@@ -25,7 +25,6 @@ namespace Moclia
      *         int64_t surface：骰子面数\n
      *         int64_t reason：所有骰子结果的总和\n
      *         std::deque\<int64_t\> randomResult：掷骰原始结果的队列\n
-     *         std::deque\<int64_t\> randomResult：掷骰原始结果的队列的字符串型
      * */
     struct dice_t
     {
@@ -35,13 +34,13 @@ namespace Moclia
         int64_t flagNum = 1; // 取多少个值
         int64_t result = 0; // 所有骰子结果的总和
         std::deque<int64_t> randResult; // 投掷原始结果的队列
-        std::deque<std::string> randResultStr;
     };
 
     /**
      * @brief 表达式结构
      * @class std::string original：输入和规范化后的原始表达式\n
      *        std::deque\<std::string\> postfix：转换后的后缀表达式\n
+     *        std::string iterationCalc：返回给用户的迭代计算中间过程\n
      *        std::string middleCalc：返回给用户的计算中间过程\n
      *        std::string finalResult：最终计算得到的结果\n
      *        std::string reason：分离出来的理由
@@ -50,6 +49,7 @@ namespace Moclia
     {
         std::string original; // 输入和规范化后的原始表达式
         std::deque<std::string> postfix; // 转换后的后缀表达式
+        std::string iterationCalc; // 迭代计算中间过程
         std::string middleCalc; // 返回给用户的计算中间过程
         std::string finalResult; // 最终计算得到的结果
         std::string reason; // 分离出来的理由
