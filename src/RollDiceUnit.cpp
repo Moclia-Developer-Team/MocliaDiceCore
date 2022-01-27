@@ -13,7 +13,6 @@
  * */
 namespace Moclia
 {
-    tool calcTool;
     /**
      * @brief XdYkqZ规则掷骰表达式计算
      * @param diceNumber：骰子的个数
@@ -44,7 +43,7 @@ namespace Moclia
         for (int diceRoll = 0; diceRoll < diceNumber; diceRoll++)
         {
             // 将掷骰结果入栈
-            diceResult.push_back(calcTool.randNumber(1,diceSurface));
+            diceResult.push_back(tool::randNumber(1,diceSurface));
         }
 
         // 判断KQ值是否小于骰子个数
@@ -61,7 +60,7 @@ namespace Moclia
             }
 
             // 带下标排序的快速排序算法
-            calcTool.quickSort(dResultForSort,resultSubscript,0,dResultForSort.size() - 1);
+            tool::quickSort(dResultForSort,resultSubscript,0,dResultForSort.size() - 1);
 
             std::deque<int64_t> kqResult;
             std::deque<int64_t> subSort;
@@ -75,7 +74,7 @@ namespace Moclia
                 }
 
                 // 不带下标的快速排序算法
-                calcTool.quickSort(subSort,0,subSort.size() - 1);
+                tool::quickSort(subSort,0,subSort.size() - 1);
 
                 // 循环通过排序后的下标取原值
                 for (int64_t kGetResult = 0; kGetResult < flagNum; kGetResult++)
@@ -92,7 +91,7 @@ namespace Moclia
                 }
 
                 // 不带下标的快速排序算法
-                calcTool.quickSort(subSort,0,subSort.size() - 1);
+                tool::quickSort(subSort,0,subSort.size() - 1);
 
                 // 循环通过排序后的下标取原值
                 for (int64_t qGetResult = 0; qGetResult < flagNum; qGetResult++)
@@ -111,21 +110,23 @@ namespace Moclia
             }
 
             reDice.randResult = kqResult;
-            reDice.result = calcTool.dequeSum(kqResult);
+            reDice.result = tool::dequeSum(kqResult);
         }
         else if (flagNum == diceNumber) // 如果二者相等免去排序步骤
         {
             reDice.randResult = diceResult;
-            reDice.result = calcTool.dequeSum(diceResult);
+            reDice.result = tool::dequeSum(diceResult);
         }
         else
         {
             // 抛出错误
-#ifdef MOCLIA_LANG_ZH
-            throw std::out_of_range("flagNum不能大于diceNumber");
-#else
-            throw std::out_of_range("The value of flagNum could not bigger than diceNumber");
-#endif
+        #ifdef MOCLIA_LANG_ZH
+            reDice.exception = "K值不能大于骰子个数";
+            //throw std::out_of_range("flagNum不能大于diceNumber");
+        #else
+            reDice.exception = "The value of K could not bigger than dice number";
+            //throw std::out_of_range("The value of flagNum could not bigger than diceNumber");
+        #endif
         }
 
         return reDice;
@@ -138,6 +139,7 @@ namespace Moclia
      * */
     void calc::expressionCalculator(exp_t &expression)
     {
+        expressionStandard(expression);
         toPostfixExp(expression.original,expression.postfix);
 
         std::deque<std::string> temp;
@@ -221,6 +223,12 @@ namespace Moclia
                             toRoll = diceCalc(toRoll.number,toRoll.surface,
                                               kqFlag, kqRight);
                         }
+
+                        if (!toRoll.exception.empty())
+                        {
+                            expression.exception = toRoll.exception;
+                            return;
+                        }
                         tmpNum = toRoll.result;
                         temp.pop_back();
                         temp.pop_back();
@@ -254,7 +262,7 @@ namespace Moclia
         }
 
         expression.finalResult = temp.back();
-        calcTool.clearZero(expression.finalResult);
+        tool::clearZero(expression.finalResult);
         temp.pop_back();
         expression.postfix.clear();
         return;
@@ -274,7 +282,6 @@ namespace Moclia
      * */
     void calc::toPostfixExp(std::string &infix, std::deque<std::string> &exper)
     {
-        //std::deque<std::string> exper; // 存数字和最终后缀表达式的队列
         exper.clear(); // 保证存后缀表达式的队列是空的，避免干扰
         std::deque<char> opera; // 存运算符的队列
         std::string tmpStr; // 缓存+类型转换
@@ -290,7 +297,7 @@ namespace Moclia
                     tmpStr = ep;
                     exper.push_back(tmpStr);
                 }
-                else if (!exper.empty() && calcTool.isDigitAll(tmpStr))
+                else if (!exper.empty() && tool::isDigitAll(tmpStr))
                 {
                     tmpStr = ep;
                     tmpNum = strtoll(exper.back().c_str(),nullptr,10) * 10
@@ -736,7 +743,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // K前存在D且D的位置是和K匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && tool::isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += exp;
                                     temp = exp;
@@ -780,7 +787,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // K前存在D且D的位置是和K匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && tool::isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += 'K';
                                     temp = 'K';
@@ -824,7 +831,7 @@ namespace Moclia
                             if (std::isdigit(temp) != 0)
                             {
                                 // Q前存在D且D的位置是和Q匹配的位置
-                                if (stand.find_last_of('D') != std::string::npos && calcTool.isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
+                                if (stand.find_last_of('D') != std::string::npos && tool::isDigitAll(stand.substr(stand.find_last_of('D') + 1,stand.size() - 1)))
                                 {
                                     stand += 'Q';
                                     temp = 'Q';
@@ -913,7 +920,7 @@ namespace Moclia
             expression.exception = "括号不匹配";
             //throw std::logic_error("括号不匹配");
 #else
-            expression.exception = "括号不匹配";
+            expression.exception = "bracket mismatch";
             //throw std::logic_error("bracket mismatch");
 #endif
             return;

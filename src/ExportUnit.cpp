@@ -21,7 +21,6 @@ void classicDiceUnit(const char *inputExp, const char * middleExp, const char *r
 {
     Moclia::exp_t classicExp;
     classicExp.original = inputExp;
-    Moclia::calc::expressionStandard(classicExp);
     Moclia::calc::expressionCalculator(classicExp);
     inputExp = classicExp.original.c_str();
     middleExp = classicExp.middleCalc.c_str();

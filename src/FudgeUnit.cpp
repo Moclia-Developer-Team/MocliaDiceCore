@@ -32,6 +32,11 @@ namespace Moclia
         dice_t fDice;
         //exp_t fExp;
         fDice = calc::diceCalc(fudgeRoll.number,6,'K',fudgeRoll.number);
+        if (!fDice.exception.empty())
+        {
+            fudgeRoll.exception = fDice.exception;
+            return;
+        }
         for (int64_t fr : fDice.randResult)
         {
             switch (fr)
@@ -76,7 +81,12 @@ namespace Moclia
             }
             else
             {
-                //exception
+            #ifdef MOCLIA_LANG_ZH
+                fudgeRoll.exception = "非Fudge骰字符";
+            #else
+                fudgeRoll.exception = "No fudge dice character";
+            #endif
+                return;
             }
         }
 
@@ -111,11 +121,11 @@ namespace Moclia
                 }
                 else
                 {
-#ifdef MOCLIA_LANG_ZH
+                #ifdef MOCLIA_LANG_ZH
                     fudgeExp.exception = "Fudge表达式错误";
-#else
+                #else
                     fudgeExp.exception = "Wrong fudge expression";
-#endif
+                #endif
                 }
             }
             else
@@ -128,12 +138,16 @@ namespace Moclia
         stand.clear();
     }
 
-    // Fudge表达式接收与处理
+    // Fudge表达式接收与处理（理由处理！！！）
     void fudge::calc(exp_t &fudgeExp)
     {
         fdice_t fd;
         std::string temp;
         fudgeExpStandard(fudgeExp);
+        if (!fudgeExp.exception.empty())
+        {
+            return;
+        }
         for (char fe : fudgeExp.original)
         {
             switch (fe)
@@ -150,6 +164,11 @@ namespace Moclia
         fd.number = strtoll(temp.c_str(), nullptr,10);
         temp.clear();
         fudgeRoll(fd);
+        if (!fd.exception.empty())
+        {
+            fudgeExp.exception = fd.exception;
+            return;
+        }
         fudgeExp.middleCalc = fd.randResult;
         fudgeExp.finalResult = fd.finalResult;
         return;

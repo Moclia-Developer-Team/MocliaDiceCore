@@ -32,6 +32,7 @@ namespace Moclia
             int64_t number; // 掷fudge骰的个数
             std::string randResult; // fudge每个骰的掷骰结果
             std::string finalResult; // 最终结果
+            std::string exception; // 错误原因
         };
 
         /**

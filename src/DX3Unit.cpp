@@ -10,11 +10,15 @@
 
 namespace Moclia
 {
-    void DX3::addDiceCalc(int64_t general, int64_t addup, int64_t surface, int64_t &totalResult, std::string &middleResult, int64_t lastAdd)
+    void DX3::addDiceCalc(int64_t general, int64_t addup, int64_t surface, int64_t &totalResult, std::string &iterationCalc, std::string &middleCalc, int64_t lastAdd, std::string &exception)
     {
         if (addup < 2)
         {
-            // exception
+        #ifdef MOCLIA_LANG_ZH
+            exception = "加骰下限为2";
+        #else
+            exception = "add dice lower limit is 2";
+        #endif
             return;
         }
         int64_t rand = general;
@@ -22,17 +26,22 @@ namespace Moclia
         int64_t totalAdd = lastAdd;
         dice_t dx3d;
         dx3d = calc::diceCalc(rand,surface,'K',rand);
-        middleResult += "[";
+        if (!dx3d.exception.empty())
+        {
+            exception = dx3d.exception;
+            return;
+        }
+        iterationCalc += "[";
         for (int64_t dxrand : dx3d.randResult)
         {
-            if (middleResult.back() == '[')
+            if (iterationCalc.back() == '[')
             {
-                middleResult += std::to_string(dxrand);
+                iterationCalc += std::to_string(dxrand);
             }
             else
             {
-                middleResult += ',';
-                middleResult += std::to_string(dxrand);
+                iterationCalc += ',';
+                iterationCalc += std::to_string(dxrand);
             }
 
             if (dxrand >= addup)
@@ -41,12 +50,12 @@ namespace Moclia
                 totalAdd++;
             }
         }
-        middleResult += "]";
+        iterationCalc += "]";
 
         if (nextRand != 0)
         {
-            middleResult += ",";
-            addDiceCalc(nextRand,addup,surface,totalResult,middleResult,totalAdd);
+            iterationCalc += ",";
+            addDiceCalc(nextRand, addup, surface, totalResult, iterationCalc, middleCalc, totalAdd, exception);
         }
         else
         {
@@ -81,7 +90,6 @@ namespace Moclia
                 {
                     dx3Epr.original = stand;
                     stand.clear();
-                    calc::expressionStandard(dx3Epr);
                     calc::expressionCalculator(dx3Epr);
                     result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr,10));
                 }
@@ -103,7 +111,33 @@ namespace Moclia
         std::deque<int64_t> CM;
         int64_t calcResult;
         expStandard(dx3Calc,CM);
-        addDiceCalc(CM[0],CM[1],CM[2],calcResult,dx3Calc.iterationCalc,0);
+        if (CM.size() != 3)
+        {
+            switch (CM.size())
+            {
+                case 0:
+                #ifdef MOCLIA_LANG_ZH
+                    dx3Calc.exception = "DX3加骰无数据输入"
+                #else
+                    dx3Calc.exception = "DX3 add dice no data input";
+                #endif
+                    return;
+                case 1:
+                #ifdef MOCLIA_LANG_ZH
+                    dx3Calc.exception = "未设定加骰线"
+                #else
+                    dx3Calc.exception = "No add dice line";
+                #endif
+                    return;
+                case 2:
+                    CM.push_back(10);
+                    break;
+                default:
+                    break;
+            }
+        }
+        addDiceCalc(CM[0],CM[1],CM[2], calcResult, dx3Calc.iterationCalc, dx3Calc.middleCalc, 0, dx3Calc.exception);
+
         return;
     }
 }

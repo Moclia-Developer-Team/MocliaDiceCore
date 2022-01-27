@@ -34,6 +34,8 @@ namespace Moclia
         int64_t flagNum = 1; // 取多少个值
         int64_t result = 0; // 所有骰子结果的总和
         std::deque<int64_t> randResult; // 投掷原始结果的队列
+        std::deque<std::string> randResultStr;
+        std::string exception; // 错误
     };
 
     /**
@@ -64,14 +66,13 @@ namespace Moclia
     class calc
     {
     public:
-        // XdYkqZ规则最小掷骰表达式计算
-        static dice_t diceCalc(int64_t diceNumber, int64_t diceSurface, char extFlag, int64_t flagNum);
         // 掷骰表达式计算和中间过程生成
         static void expressionCalculator(exp_t &expression);
+        // XdYkqZ规则最小掷骰表达式计算
+        static dice_t diceCalc(int64_t diceNumber, int64_t diceSurface, char extFlag, int64_t flagNum);
+    private:
         // 掷骰表达式规范化
         static void expressionStandard(exp_t &expression);
-
-    private:
         // 中缀表达式转后缀表达式
         static void toPostfixExp(std::string &infix, std::deque<std::string> &exper);
         // 后缀表达式转中缀表达式
