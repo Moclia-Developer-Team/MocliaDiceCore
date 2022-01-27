@@ -56,7 +56,7 @@ extern "C"
      * @note 该函数作为最基础的掷骰表达式处理函数，被所有规则表达式处理函数引用。\n
      * 该函数处理统一处理了表达式规范化到计算的全部过程，使用者可轻松获取计算结果和附属结果。
      * */
-    MOCLIA_EXPORT void classicDiceUnit(const char *&inputExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception);
+    MOCLIA_EXPORT void classicDiceUnit(char *&inputExp, char *&middleExp, char *&reason, int64_t &result, char *&exception);
     /**
      * @brief Fudge引擎特殊骰子的表达式计算
      * @param inputExp 原始未规范Fudge表达式
@@ -71,7 +71,7 @@ extern "C"
      *         exception 有错误这里不为空
      * @note Fudge引擎采用的骰子是一个特殊的六面骰，两个对面标记+，两个对面标记-，两个对面为空。\n
      * */
-    MOCLIA_EXPORT void fudgeDiceUnit(const char *&inputExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception);
+    MOCLIA_EXPORT void fudgeDiceUnit(char *&inputExp, char *&middleExp, char *&reason, int64_t &result, char *&exception);
     /**
      * @brief 双重十字加骰表达式计算
      * @param inputExp 原始未规范Fudge表达式
@@ -88,5 +88,5 @@ extern "C"
      *         exception 有错误这里不为空
      * @note DX3的加骰最终计算结果是：加骰次数 × 10 + 最后一次掷骰结果中的最大值
      * */
-    MOCLIA_EXPORT void dx3AddDiceUnit(const char *&inputExp, const char *&iterationExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception);
+    MOCLIA_EXPORT void dx3AddDiceUnit(char *&inputExp, char *&iterationExp, char *&middleExp, char *&reason, int64_t &result, char *&exception);
 }
