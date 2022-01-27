@@ -17,7 +17,7 @@ int64_t randTool(int64_t min, int64_t max)
     return Moclia::tool::randNumber(min,max);
 }
 
-void classicDiceUnit(const char *inputExp, const char * middleExp, const char *reason, int64_t result, const char *exception)
+void classicDiceUnit(const char *&inputExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception)
 {
     Moclia::exp_t classicExp;
     classicExp.original = inputExp;
@@ -30,7 +30,7 @@ void classicDiceUnit(const char *inputExp, const char * middleExp, const char *r
     return;
 }
 
-void fudgeDiceUnit(const char *inputExp, const char *middleExp, const char *reason, int64_t result, const char *exception)
+void fudgeDiceUnit(const char *&inputExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception)
 {
     Moclia::exp_t fudgeExp;
     fudgeExp.original = inputExp;
@@ -42,7 +42,7 @@ void fudgeDiceUnit(const char *inputExp, const char *middleExp, const char *reas
     return;
 }
 
-void dx3AddDiceUnit(const char *inputExp, const char *iterationExp, const char *middleExp, const char *reason, int64_t result, const char *exception)
+void dx3AddDiceUnit(const char *&inputExp, const char *&iterationExp, const char *&middleExp, const char *&reason, int64_t &result, const char *&exception)
 {
     Moclia::exp_t dx3Exp;
     dx3Exp.original = inputExp;
