@@ -18,7 +18,7 @@ namespace Moclia
     class DX3
     {
     public:
-       static void addDice(exp_t dx3Calc);
+       static void addDice(exp_t &dx3Calc);
     private:
         /**
         * @brief 双重十字加骰处理

@@ -139,7 +139,7 @@ namespace Moclia
         }
     }
 
-    void DX3::addDice(exp_t dx3Calc)
+    void DX3::addDice(exp_t &dx3Calc)
     {
         std::deque<int64_t> CM;
         int64_t calcResult;
