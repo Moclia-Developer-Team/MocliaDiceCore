@@ -19,6 +19,15 @@ namespace Moclia
     class COC
     {
         static void sanityRoll();
+        /**
+         * @brief COC技能检定
+         * @param skillName
+         * @param skillValue
+         * @param result
+         * @param reason
+         * @param exception
+         * @note 未实现
+         * */
         static void skillRoll();
         static void rewardAndPunishRoll();
     };

@@ -61,6 +61,8 @@ namespace Moclia
         {
             tool::quickSort(dx3d.randResult,0,dx3d.randResult.size() - 1);
             totalResult = totalAdd * 10 + dx3d.randResult.back();
+            middleCalc = std::to_string(totalAdd) + "*10=" + std::to_string(dx3d.randResult.back());
+            dx3d.randResult.clear();
         }
         return;
     }
@@ -69,7 +71,7 @@ namespace Moclia
     {
         bool isReason = false;
         std::string expEp = "+-*xX/DKQdkq()";
-        std::string stand = "";
+        std::string stand = "", original = "";
         exp_t dx3Epr;
         dx3Exp.reason.clear();
 
@@ -84,17 +86,48 @@ namespace Moclia
             {
                 if (expEp.find(exp) != std::string::npos || std::isdigit(exp) != 0)
                 {
+                    original += exp;
                     stand += exp;
                 }
                 else if (exp == 'C' || exp == 'c' || exp == 'M' || exp == 'm')
                 {
-                    dx3Epr.original = stand;
-                    stand.clear();
-                    calc::expressionCalculator(dx3Epr);
-                    result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr,10));
+                    switch (exp)
+                    {
+                        case 'C':
+                        case 'M':
+                            original += exp;
+                            dx3Epr.original = stand;
+                            stand.clear();
+                            calc::expressionCalculator(dx3Epr);
+                            result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr,10));
+                            break;
+                        case 'c':
+                            original += "C";
+                            dx3Epr.original = stand;
+                            stand.clear();
+                            calc::expressionCalculator(dx3Epr);
+                            result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr,10));
+                            break;
+                        case 'm':
+                            original += "M";
+                            dx3Epr.original = stand;
+                            stand.clear();
+                            calc::expressionCalculator(dx3Epr);
+                            result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr,10));
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 else
                 {
+                    if (!stand.empty())
+                    {
+                        dx3Epr.original = stand;
+                        stand.clear();
+                        calc::expressionCalculator(dx3Epr);
+                        result.push_back(strtoll(dx3Epr.finalResult.c_str(), nullptr, 10));
+                    }
                     isReason = true;
                     dx3Exp.reason += exp;
                 }
@@ -136,8 +169,9 @@ namespace Moclia
                     break;
             }
         }
+        dx3Calc.middleCalc.clear();
         addDiceCalc(CM[0],CM[1],CM[2], calcResult, dx3Calc.iterationCalc, dx3Calc.middleCalc, 0, dx3Calc.exception);
-
+        dx3Calc.finalResult = std::to_string(calcResult);
         return;
     }
 }
